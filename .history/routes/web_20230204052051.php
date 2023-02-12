@@ -1,0 +1,59 @@
+<?php
+
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/home', function () {
+    return view('pages.home');
+})->name('home');
+Route::get('/profile', function () {
+    return view('pages.users-profile');
+})->name('profile');
+Route::get('/newuser', function () {
+    return view('pages.create-user');
+})->name('new-user');
+Route::get('/users', function () {
+    return view('pages.user-list');
+})->name('users-list');
+
+Route::get('/visitorbadges', [BadgeVisiteurController::class, 'index'])->name('visitor-badge-list');
+
+Route::get('/visitorbadgesrequest', function () {
+    return view('pages.request-visitor-badge');
+})->name('visitor-badge-request');
+
+Route::get('/societies', function () {
+    return view('pages.societies-list');
+})->name('societies-list');
+
+Route::post('/add-visitor-badge', [BadgeVisiteurController::class, 'store'])->name('vbadge.add');
+Route::get('/delete-visitor-badge/{idVBadge}', [BadgeVisiteurController::class, 'destroy'])->name('vbadge.remove');
+
+Route::get('/register', [RegisteredUserController::class, 'store'])->name('registration');
+
+// Charger la lsite des badges visiteur
+
+// Ajouter badge visiteur
+
+// Afficher un badge visiteur
+
+// Modifier un badge visiteur
+
+require __DIR__ . '/auth.php';
