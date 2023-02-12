@@ -8,7 +8,6 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -24,29 +23,13 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(Request $request)
+    public function store(LoginRequest $request): RedirectResponse
     {
-        // dd($request);
-        // $request->authenticate();
+        $request->authenticate();
 
-        // $request->session()->regenerate();
+        $request->session()->regenerate();
 
-        // return redirect()->intended(RouteServiceProvider::HOME);
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            $user = Auth::getProvider()->retrieveByCredentials($credentials);
-            // $user = DB::select('SELECT * FROM tbl_utilisateur WHERE email = :email', ['email' => $request->email]);
-            Auth::login($user);
-            // dd(Auth::user());
-            return redirect('/');
-        }
-
-        return back()->with('pseudoUtil', 'Les informations d\'identification fournis sont incorrect.');
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

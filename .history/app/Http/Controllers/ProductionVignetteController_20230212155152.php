@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\DemandeProduction;
+use App\Models\ProductionVignette;
+use Illuminate\Http\Request;
+
+class ProductionVignetteController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $data = DemandeProduction::with(['employe', 'badges'])->where('typeProd', '=', 'vignette')->latest()->get();
+        return view('pages.productions-vignettes', compact('data'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('pages.production-vignette');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\ProductionVignette  $productionVignette
+     * @return \Illuminate\Http\Response
+     */
+    public function show(ProductionVignette $productionVignette)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\ProductionVignette  $productionVignette
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(ProductionVignette $productionVignette)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\ProductionVignette  $productionVignette
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, ProductionVignette $productionVignette)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\ProductionVignette  $productionVignette
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(ProductionVignette $productionVignette)
+    {
+        //
+    }
+}
