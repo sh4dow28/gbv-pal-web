@@ -101,7 +101,7 @@ class DatabaseUserProvider implements UserProvider
     {
         $credentials = array_filter(
             $credentials,
-            fn ($key) => !str_contains($key, 'mdpUtil'),
+            fn ($key) => !str_contains($key, 'password'),
             ARRAY_FILTER_USE_KEY
         );
 
@@ -155,7 +155,7 @@ class DatabaseUserProvider implements UserProvider
     public function validateCredentials(UserContract $user, array $credentials)
     {
         return $this->hasher->check(
-            $credentials['mdpUtil'],
+            $credentials['passwor'],
             $user->getAuthPassword()
         );
     }
