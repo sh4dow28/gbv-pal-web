@@ -22,7 +22,7 @@ class UtilisateurTableSeeder extends Seeder
                 'droitUtil' => 'admin',
                 'pseudoUtil' => 'admin',
                 'password' => bcrypt('password-admin'),
-                'emailUtil' => 'pal@gmail.com',
+                'email' => 'pal@gmail.com',
             ]
         ]);
     }
