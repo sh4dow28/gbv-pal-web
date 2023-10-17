@@ -45,16 +45,14 @@ class RegisteredUserController extends Controller
                 ->withInput();
         }
 
-        User::create(
-            [
+        User::create([
                 "codeUtil"  => Helper::IDGenerator(new User, 'codeUtil', 'codeUtil', 4, 'EMP'),
-                "nomUtil" => $request->nomUtil,
-                "email" => $request->email,
-                "droitUtil" => $request->droitUtil,
-                "pseudoUtil" => $request->pseudoUtil,
-                "password" => ($request->password),
-            ]
-        );
+                "nomUtil"   => $request->nomUtil,
+                "email"     => $request->email,
+                "droitUtil"     => $request->droitUtil,
+                "pseudoUtil"    => $request->pseudoUtil,
+                "password"  => bcrypt($request->password),
+        ]);
         return redirect()
             ->back()
             ->with('message', 'Compte créer avec succès.');

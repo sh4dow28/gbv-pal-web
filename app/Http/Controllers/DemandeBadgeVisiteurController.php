@@ -7,6 +7,7 @@ use App\Models\DemandeBadgeVisiteur;
 use App\Models\Visiteur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class DemandeBadgeVisiteurController extends Controller
@@ -43,12 +44,6 @@ class DemandeBadgeVisiteurController extends Controller
      */
     public function store(Request $request)
     {
-        // nomVis
-        // id_typeVis
-        // num_idVis
-        // exp_idVis
-        // telVis
-        // numVBadge
         $messages = [
             'nomVis.required'       => 'Le nom du visiteur est obligatoire.',
             'id_typeVis.required'   => 'Choisissez le type de pièce d\'identité',
@@ -87,17 +82,18 @@ class DemandeBadgeVisiteurController extends Controller
                     'telVis'        => $data['telVis'],
                     'created_at'    => now(),
                 ]);
-                // dd($visitor)->id;
                 DemandeBadgeVisiteur::create([
-                    'codeUtil'  => {{ Session::get('loginID')->codeUtil }},
+                    'codeUtil'  => Session::get('loginID')->codeUtil,
                     'idVBadge'  => $badge->idVBadge,
                     'idVis'     => $visitor->id,
                 ]);
                 DB::update('UPDATE tbl_badge_visiteur SET etatVBadge = :etat WHERE numVBadge = :num', ['etat' => 'indisponible', 'num' => $request->numVBadge]);
                 DB::commit();
+                return back()->with('message', 'Demande de badge abouttie avec succès !');
+            }else{
+                return back()->with('error', 'Le badge choisi n\'est pas disponible !');
             }
 
-            return back()->with('message', 'Demande de badge abouttie avec succès !');
         }
     }
 
@@ -126,8 +122,10 @@ class DemandeBadgeVisiteurController extends Controller
                 DB::update('UPDATE demande_badge_visiteurs SET status = :stat, dateRetBVisit = :ret WHERE idVBadge = :badge', ['stat' => 'Terminer', 'ret' => now(), 'badge' => $badge->idVBadge]);
                 DB::update('UPDATE tbl_badge_visiteur SET etatVBadge = :etat WHERE numVBadge = :num', ['etat' => 'disponible', 'num' => $request->numVBadge]);
                 DB::commit();
+                return back()->with('success', 'Badge retourner avec succès !');
+            }else{
+                return back()->with('error', 'Le badge n\'est pas emprunter ou n\'existe pas.');
             }
-            return back()->with('success', 'Badge retourner avec succès !');
         }
     }
 

@@ -37,10 +37,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = DB::raw("password('$password')");
-    }
+    // public function setPasswordAttribute($password)
+    // {
+    //     $this->attributes['password'] = DB::raw("password('$password')");
+    // }
+
     public function getAuthPassword()
     {
         return $this->password;

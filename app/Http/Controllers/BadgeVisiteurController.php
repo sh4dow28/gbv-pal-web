@@ -48,7 +48,6 @@ class BadgeVisiteurController extends Controller
             'numVBadge'     => 'bail|required|unique:tbl_badge_visiteur',
         ];
         $check = BadgeVisiteur::where('numVBadge', '=', $request->typeVBadge . '-' . $request->numVBadge)->get();
-        // dd(sizeof($check));
         $data = $request->all();
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->stopOnFirstFailure()->fails()) {
@@ -60,7 +59,7 @@ class BadgeVisiteurController extends Controller
         if (sizeof($check) > 0) {
             return redirect()
                 ->back()
-                ->withErrors("Le numéro de badge existe déjà")
+                ->with('error', "Le numéro de badge existe déjà")
                 ->withInput();
         }
         BadgeVisiteur::create([

@@ -45,6 +45,13 @@
                                 </div>
                             </div>
                         @endif
+                        @if (session()->has('error'))
+                            <div class="card-header text-center">
+                                <div class="alert alert-danger">
+                                    {{ session()->get('error') }}
+                                </div>
+                            </div>
+                        @endif
                         <div class="card-body">
                             <h5 class="card-title">Ajouter une société</h5>
                             <form class="row g-3" method="POST" action=" {{ route('societe.store') }} ">

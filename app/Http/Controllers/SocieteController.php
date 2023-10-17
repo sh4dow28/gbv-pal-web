@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RepresentantSociete;
 use App\Models\Societe;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -88,37 +89,41 @@ class SocieteController extends Controller
                 ->withInput();
         } else {
             $data = $request->all();
-            DB::beginTransaction();
-            $representant = RepresentantSociete::create([
-                'nomRep'    => $data['nomRep'],
-                'dobRep'    => $data['dobRep'],
-                'pobRep'    => $data['pobRep'],
-                'postRep'   => $data['postRep'],
-                'telRep'    => $data['telRep'],
-                'emailRep'  => $data['emailRep'],
-                'typeIDRep' => $data['typeIDRep'],
-                'numIDRep'  => $data['numIDRep'],
-            ]);
-            // dd($representant->id);
-            $idRep = $representant->id;
-            Societe::create([
-                'raison_social'     => $data['raison_social'],
-                'domaineActivite'   => $data['domaineActivite'],
-                'telSoc'            => $data['telSoc'],
-                'mobileSoc'         => $data['mobileSoc'],
-                'emailSoc'          => $data['emailSoc'],
-                'webSoc'            => $data['webSoc'],
-                'adrSoc'            => $data['adrSoc'],
-                'qrtSoc'            => $data['qrtSoc'],
-                'villSoc'           => $data['villSoc'],
-                'paysSoc'           => $data['paysSoc'],
-                'numFisc'           => $data['numFisc'],
-                'idRep'             => $idRep,
-            ]);
-            DB::commit();
+            try {
+                DB::beginTransaction();
+                $representant = RepresentantSociete::create([
+                    'nomRep'    => $data['nomRep'],
+                    'dobRep'    => $data['dobRep'],
+                    'pobRep'    => $data['pobRep'],
+                    'postRep'   => $data['postRep'],
+                    'telRep'    => $data['telRep'],
+                    'emailRep'  => $data['emailRep'],
+                    'typeIDRep' => $data['typeIDRep'],
+                    'numIDRep'  => $data['numIDRep'],
+                ]);
+                // dd($representant->id);
+                $idRep = $representant->id;
+                Societe::create([
+                    'raison_social'     => $data['raison_social'],
+                    'domaineActivite'   => $data['domaineActivite'],
+                    'telSoc'            => $data['telSoc'],
+                    'mobileSoc'         => $data['mobileSoc'],
+                    'emailSoc'          => $data['emailSoc'],
+                    'webSoc'            => $data['webSoc'],
+                    'adrSoc'            => $data['adrSoc'],
+                    'qrtSoc'            => $data['qrtSoc'],
+                    'villSoc'           => $data['villSoc'],
+                    'paysSoc'           => $data['paysSoc'],
+                    'numFisc'           => $data['numFisc'],
+                    'idRep'             => $idRep,
+                ]);
+                DB::commit();
+                return back()->with('message', 'Sociéte ajouter avec succès !');
+            } catch (Exception $ex) {
+                return back()->with('error', 'Une erreur s\'est produite'.$ex->getMessage());
+            }
         }
 
-        return back()->with('message', 'Sociéte ajouter avec succès !');
     }
 
     /**
